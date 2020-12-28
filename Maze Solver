@@ -1,0 +1,132 @@
+public class MazeProblem
+{
+    private char[][] maze;
+    private int counter;
+
+
+    /**
+     * Constructor to create maze puzzle
+     * @param chars represents the inputted maze
+     */
+    public MazeProblem(char[][] chars)
+    {
+        maze=chars;
+    }
+
+    /**
+     * A method that performs the recursive actions to solve the maze puzzle.
+     * @param row represents the start row of the maze.
+     * @param col represents the start column of the maze.
+     */
+    public void solve(int row,int col)
+    {
+        if (solvedMaze(row,col))
+        {
+            counter++;
+            print();
+        }
+        else
+            {
+                if (checkLeft(row,col))
+                {
+                    this.maze[row][col-1] = 'p';
+                    solve(row,col-1);
+                }
+                if (checkRight(row,col))
+                {
+                    this.maze[row][col+1] = 'p';
+                    solve(row,col+1);
+                }
+                if (checkBottom(row,col))
+                {
+                    this.maze[row+1][col] = 'p';
+                    solve(row+1,col);
+                }
+                if (checkTop(row,col))
+                {
+                    this.maze[row-1][col] = 'p';
+                    solve(row-1,col);
+                }
+            }
+            this.maze[row][col] = '0';//backtracking technique
+    }
+
+    /**
+     * A method that formulates the needed maze and puts the maze in a
+     * 2D platform of one and zeros
+     */
+    private void print()
+    {
+        System.out.println("The solution count: "+counter);
+       for (int i=0;i<maze.length;i++)
+       {
+           for (int j=0;j<maze[i].length;j++)
+           {
+               System.out.print(maze[i][j]+" ");
+           }
+        System.out.println();
+       }
+        System.out.println();
+
+    }
+
+    /**
+     * A method that checks the left movement, the movement left should only go to the end of the maze and return
+     * false if the maze reaches the side or if it reaches a one
+     * @param row represents the row its moving on.
+     * @param col represents the column it is moving on.
+     * @return if can move to an available 0.
+     */
+    private boolean checkLeft(int row, int col)
+    {
+        return col-1>=0 && maze[row][col-1]=='0';
+    }
+
+    /**
+     * A method that checks the right movement, the movement right should only go to the end of the maze and return
+     * false if the maze reaches the side or if it reaches a one
+     * @param row represents the row its moving on.
+     * @param col represents the column it is moving on.
+     * @return if can move to an available 0.
+     */
+    private boolean checkRight(int row, int col)
+    {
+       return col+1<maze[col].length && maze[row][col+1]=='0';
+    }
+
+    /**
+     * A method that checks top movement, the movement above should only go to the end of the maze and return
+     * false if the maze reaches the top or if it reaches a one
+     * @param row represents the row its moving on.
+     * @param col represents the column it is moving on.
+     * @return
+     */
+    private boolean checkTop(int row, int col)
+    {
+        return row-1>=0 && maze[row-1][col]=='0';
+    }
+
+    /**
+     * A method that checks the bottom movement, the movement below should only go to the end of the maze and return
+     * false if the maze reaches the top or if it reaches a one
+     * @param row represents the row its moving on.
+     * @param col represents the column it is moving on.
+     * @return
+     */
+    private boolean checkBottom(int row, int col)
+    {
+        return row+1<maze.length && maze[row+1][col]=='0';
+    }
+
+    /**
+     *  A method to that represents the maze has been solved and has reached e
+     * @param row represents the row its moving on.
+     * @param col represents the column it is moving on.
+     * @return the solved solution.
+     */
+    private boolean solvedMaze(int row, int col)
+    {
+        return ((col-1>=0 && maze[row][col-1]=='e') || (col+1<maze[col].length && maze[row][col+1]=='e') ||
+                (row-1>=0 && maze[row-1][col]=='e') || (row+1<maze.length && maze[row+1][col]=='e'));
+    }
+}
